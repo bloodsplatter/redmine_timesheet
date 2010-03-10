@@ -2,6 +2,8 @@ class TimesheetController < ApplicationController
   unloadable
   
   helper "timesheet"
+  
+  include Redmine::Export::PDF
 
   def index
     if params && params[:week] then
@@ -10,18 +12,16 @@ class TimesheetController < ApplicationController
       @week = Date.today
     end
     @project = Project.find(1)
-    render :action => "index" 
-  end
-
-  def to_pdf
-    @project = Project.find(1)
-    if params && params[:week] then
-      @week = params[:week]
-    else
-      @week = Date.today
+    
+    respond_to do |format|
+      format.html {render :action => "index"}
+      format.pdf {send_data(), :type => "application/pdf", :name => "timesheet.pdf"}
     end
-    #maak pdf aan?
-    render :pdf => "to_pdf"
   end
   
+  private
+  
+  def timesheet_to_pdf
+    
+  end
 end
