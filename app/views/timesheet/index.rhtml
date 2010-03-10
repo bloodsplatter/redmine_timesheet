@@ -1,2 +1,2 @@
-<h2><%= l :timesheet_for %> <%= first_day_in_week(@week).strftime("%x") %> <%=l :and %> <%= last_day_in_week(@week).strftime("%x") %></h2>
+<h2><%= l :timesheet_for %> <%=h first_day_in_week(@week).strftime("%d/%m/%y") %> <%=l :and %> <%=h last_day_in_week(@week).strftime("%d/%m/%y") %></h2>
 <%= render :partial => "table"%>
