@@ -1,17 +1,27 @@
 class TimesheetController < ApplicationController
   unloadable
-
-  helper :issues
-  include ApplicationHelper
-  helper :timelog
-  helper :timesheet
+  
+  helper "timesheet"
 
   def index
+    if params && params[:week] then
+      @week = Date.parse(params[:week])
+    else
+      @week = Date.today
+    end
     @project = Project.find(1)
-    #hash aanmaken met user als key en array van time entries als value
-    
+    render :action => "index" 
   end
 
   def to_pdf
+    @project = Project.find(1)
+    if params && params[:week] then
+      @week = params[:week]
+    else
+      @week = Date.today
+    end
+    #maak pdf aan?
+    render :pdf => "to_pdf"
   end
+  
 end

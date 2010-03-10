@@ -1,0 +1,46 @@
+<%
+	first_weekday = first_day_in_week(@week)
+	last_weekday = last_day_in_week(@week)
+%>
+<table id="top" style="border:1px solid black;">
+	<thead>
+		<tr>
+			<th><%=l :user_heading%></th>
+			<th><%=l :issue_heading%></th>
+			<th><%=l :issue_description_heading%></th>
+			<th><%=l :init_planned_heading %></th>
+			<th><%=l :planned_heading%></th>
+			<th><%=l :issue_spent_heading%></th>
+			<th><%=l :issue_to_spend_heading%></th>
+			<th><%=l :issue_completion_heading%></th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr style="font-weight:bold;">
+			<td colspan="3">Totalen:</td>
+			<td <%= number_style %>><%=h number_with_precision(@project.issues.inject(0) {|s,v| s+= v.custom_value_for(1).value.to_i},:precision => 2, :separator => ",")%></td>
+			<td <%= number_style %>><%=h number_with_precision(@project.issues.inject(0) {|s,v| s+= v.estimated_hours},:precision => 2, :separator => ",")%></td>
+			<td <%= number_style %>><%=h number_with_precision(@project.issues.inject(0) {|s,i| s+= i.time_entries.inject(0) {|s,v| if v.spent_on > first_weekday && v.spent_on < last_weekday then s+= v.hours else s += 0 end}},:precision => 2, :separator => ",")%></td>
+			<td <%= number_style %>><%=h number_with_precision(@project.issues.inject(0) {|s,i| s+= i.estimated_hours - i.time_entries.inject(0) {|s,v| if v.spent_on > first_weekday && v.spent_on < last_weekday then s+= v.hours else s += 0 end}},:precision => 2, :separator => ",")%></td>
+			<td>&nbsp;</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		<% uname = ""%>
+		<% @project.users.each do |u|%>
+			<% @project.issues.each do |i|%>
+				<tr>
+					<td><%= u unless uname == u.to_s%></td>
+					<td style="text-align:right;"><%= i.id%></td>
+					<td><%= i.subject%></td>
+					<td <%= number_style %>><%= number_with_precision(i.custom_value_for(1).value,:precision => 2, :separator => ",")%></td>
+					<td <%= number_style %>><%= h number_with_precision(i.estimated_hours,:precision => 2, :separator => ",")%></td>
+					<td <%= number_style %>><%= h number_with_precision(i.time_entries.inject(0) {|s,v| if v.spent_on > (Date.today - 7) then s+= v.hours else s += 0 end},:precision => 2, :separator => ",")%></td>
+					<td <%= number_style %>><%= h number_with_precision(i.estimated_hours - i.time_entries.inject(0) {|s,v| if v.spent_on > first_weekday && v.spent_on < last_weekday then s+= v.hours else s += 0 end},:precision => 2, :separator => ",")%></td>
+					<td <%= number_style %>><%=i.done_ratio%> %</td>
+				</tr>
+				<% uname = u.to_s%>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,32 @@
+<h2><%= l :timesheet_for %> <%= Date.today.to_s %></h2>
+<table id="top" style="border:1px solid black;">
+	<thead>
+		<tr>
+			<th><%=l :user_heading%></th>
+			<th><%=l :issue_heading%></th>
+			<th><%=l :issue_description_heading%></th>
+			<th><%=l :init_planned_heading %></th>
+			<th><%=l :planned_heading%></th>
+			<th><%=l :issue_spent_heading%></th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr><td colspan="5"><a href="#top">Back to top</td></tr>
+	</tfoot>
+	<tbody>
+		<% @project.users.each do |u|%>
+			<% @project.issues.each do |i|%>
+			<% unless i.spent_on < (Date.today - 7)%>
+				<tr>
+					<td><%= u%></td>
+					<td style="text-align:right;"><%= i.id%></td>
+					<td><%= i.subject%></td>
+					<td style="text-align:right;"><%= h number_with_precision(i.custom_value_for(1).value,:precision => 2, :separator => ",")%></td>
+					<td style="text-align:right;"><%= h number_with_precision(i.estimated_hours,:precision => 2, :separator => ",")%></td>
+					<td style="text-align:right;"><%= h number_with_precision(i.time_entries.inject(0) {|s,v| s += v.hours},:precision => 2, :separator => ",")%></td>
+				</tr>
+			<% end %>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,6 @@
+<%
+pdf = init_pdf
+pdf.SetSubject "Timesheet voor " + @week.strftime("%x")
+pdf.SetTitle "WHARRGARBL Timesheet"
+
+%>

@@ -7,3 +7,6 @@ nl:
   issue_heading: "Issue nr"
   issue_description_heading: "Omschrijving"
   issue_spent_heading: "Bestede tijd"
+  issue_to_spend_heading: "Te besteden tijd"
+  and: "en"
+  issue_completion_heading: "Voltooid (%)"
