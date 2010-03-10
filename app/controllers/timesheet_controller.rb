@@ -4,8 +4,11 @@ class TimesheetController < ApplicationController
   helper :issues
   include ApplicationHelper
   helper :timelog
+  helper :timesheet
 
   def index
+    @project = Project.find(1)
+    #hash aanmaken met user als key en array van time entries als value
     
   end
 

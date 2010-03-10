@@ -1,0 +1,9 @@
+#Dutch strings
+nl:
+  timesheet_for: "Timesheet voor"
+  user_heading: "Gebruiker"
+  init_planned_heading: "Initieel geplande tijd"
+  planned_heading: "Geplande tijd"
+  issue_heading: "Issue nr"
+  issue_description_heading: "Omschrijving"
+  issue_spent_heading: "Bestede tijd"
